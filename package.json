@@ -1,0 +1,25 @@
+{
+  "name": "@tarruka/wiki-template",
+  "version": "1.0.0",
+  "description": "Skill-based knowledge wiki for opencode — bootstrap, feature/ADR/architecture/gotcha dossiers, ingest/query/lint, SDD spec+verify, plus kb-curator and wiki-qa agents.",
+  "main": ".opencode/",
+  "files": [
+    ".opencode/",
+    "wiki/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tarruka/wiki-template"
+  },
+  "keywords": [
+    "opencode",
+    "wiki",
+    "knowledge-base",
+    "sdd",
+    "documentation"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
