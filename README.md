@@ -80,3 +80,4 @@ matches a `Sensitive paths` glob in `wiki/CONFIG.md`, it injects a nudge to run
 ## License
 
 MIT — adapt freely.# wiki-template
+# wiki-template
