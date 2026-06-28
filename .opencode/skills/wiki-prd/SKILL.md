@@ -18,6 +18,13 @@ The wiki is dev-only by default; this skill is the trigger to add `wiki/product/
 and a `## Product` section to `wiki/index.md`. Update SCHEMA's "what does NOT
 belong here" line if it still excludes product docs.
 
+## Elicitation (before authoring)
+
+Run SCHEMA's **Elicitation** loop before writing. For a PRD the blanks to surface
+are the product decisions left unstated: goals vs non-goals, target personas,
+success metrics, scope edges. If a client source exists (below), elicit only the
+gaps it leaves — don't re-ask what the source already answers.
+
 ## Procedure
 
 1. Read `wiki/SCHEMA.md` and `wiki/index.md`. If a client source exists (PDF,

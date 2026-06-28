@@ -16,9 +16,10 @@ read this file instead of hardcoding values, so the skills stay portable.
 mode: <wiki-only | sdd>
 ```
 
-- `sdd` — spec-driven. New/greenfield projects. Dossiers are written **before**
-  the code (`status: spec`), drive implementation + tests, promoted to `stable`
-  by `wiki-verify`. Skills `wiki-spec` and `wiki-verify` are active.
+- `sdd` — spec-driven. New/greenfield projects. The **contract** is written
+  **before** the code as a spec in `wiki/specs/` (`draft`→`ratified`); one spec
+  originates N **features** (`building`) that reference its ACs and are promoted
+  to `stable` by `wiki-verify`. Skills `wiki-spec` and `wiki-verify` are active.
 - `wiki-only` — descriptive. Mature projects with most of the surface built.
   Dossiers document **what exists** (`draft` → verified `stable`). Spec-first
   skills stay dormant.
@@ -34,7 +35,7 @@ roles:   <auth roles, if the app is role-gated — else omit this line>
 ## Sensitive paths
 
 Changes here most often invalidate the wiki. `kb-curator` / `wiki-ingest` scope
-drift checks to the dossiers these paths feed. The drift plugin reads the
+drift checks to the dossiers these paths feed. The PostToolUse hook reads the
 globs in this block — `path/glob → owning page(s)`.
 
 ```
@@ -46,7 +47,9 @@ globs in this block — `path/glob → owning page(s)`.
 ## Status lifecycle
 
 - `wiki-only` mode: `draft` → `stable` → `needs-review`.
-- `sdd` mode adds, before the above: `spec` → `building` → `stable`.
+- `sdd` mode: specs live their own lifecycle `draft` → `ratified` (and stop —
+  contracts aren't code-tracked); features go `building` → `stable` (+
+  `needs-review` on drift).
 
 ## QA (optional — only if you use the wiki-qa agent)
 

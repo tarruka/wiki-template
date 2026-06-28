@@ -24,7 +24,11 @@ it no longer excludes ADRs.
 1. Read `wiki/SCHEMA.md` and `wiki/index.md`.
 2. Gather from the user (ask if missing — don't invent): the decision, the
    context/forces, the alternatives considered and **why rejected**, and the
-   consequences (what this makes easy/hard later).
+   consequences (what this makes easy/hard later). The **decision** is the user's
+   — never assume it. For the alternatives and consequences, use a light form of
+   SCHEMA's **Elicitation** loop: list the ones you'd assume as a numbered list,
+   let the user reject by number, and fill the rejected ones via the interactive
+   selector.
 3. Create `wiki/decisions/YYYY-MM-DD-<topic>.md` with frontmatter
    `name, status: accepted | superseded, created, deciders, tags`.
 4. Body: `## Context`, `## Decision`, `## Alternatives rejected` (each + **Why

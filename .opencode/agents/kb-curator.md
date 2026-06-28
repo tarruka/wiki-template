@@ -33,9 +33,11 @@ skill was explicitly invoked to create that folder.
 1. **Ingest** — given a source (a PR, a changed file, a code path), find the
    page(s) that own the affected claims and **update in place**. Integrate, never
    append "UPDATE 2026-…". Bump `last_review`; flip `status` to `stable` only if
-   you verified the whole page against current code, else `needs-review`. Create a
-   new page only if a genuinely new concept emerged — and link it from neighbors
-   and the index.
+   you verified the whole page against current code, else `needs-review`. Never
+   move a **spec** on a code change — it's a contract (`draft`→`ratified` only);
+   if code contradicts it, flag upstream drift for the user, don't restatus it.
+   Create a new page only if a genuinely new concept emerged — and link it from
+   neighbors and the index.
 2. **Query** — answer by reading the wiki first. Cite pages with `[[wikilinks]]`.
    If the wiki can't answer, say so explicitly and point at the code path that
    would; don't invent.
