@@ -45,12 +45,15 @@ public API surface). Use the shape in `${TEMPLATE_ROOT}/wiki/CONFIG.template.md`
 
 - `wiki/SCHEMA.md` — conventions (page anatomy, frontmatter, wikilink rules,
   citations). If absent, copy `${TEMPLATE_ROOT}/wiki/SCHEMA.md` into the
-  project. Add the SDD statuses (`spec`, `building`) to the lifecycle section
-  only when `mode: sdd`.
-- `wiki/index.md` — the map. Include a "Tooling" section listing the curator and
-  the skills available **for the chosen mode**, plus a one-line pointer:
+  project. Keep the spec lifecycle (`draft`→`ratified`) and feature `building`
+  status relevant only when `mode: sdd`.
+- `wiki/index.md` — the map. Give it a content section per folder that exists:
+  always `## Features` and `## Architecture`; in `mode: sdd` add `## Specs` above
+  Features (it's the upstream spine). Plus a "Tooling" section listing the curator
+  and the skills available **for the chosen mode**, and a one-line pointer:
   "engineering conventions → `.opencode/conventions/project.md`".
-- `wiki/features/` — empty dir for dossiers.
+- `wiki/features/` — empty dir for dossiers. In `mode: sdd` also create
+  `wiki/specs/` (the contracts; one spec → N features).
 - `wiki/architecture/` — **seed by default** from a snapshot read of the code
   (meaningful on mature `wiki-only` repos). Identify the cross-cutting topics
   the repo *actually has* and create one file per topic by delegating to
@@ -84,69 +87,47 @@ tech-agnostic:
 Present the full batch **before writing anything**. For each candidate show: the
 path glob, the convention, its classification, and — for flagged ones — the
 current → recommended directive and why. The user approves / edits / drops per
-item. **Never write an unapproved convention** — neither good nor improved ones.
+item. **Never write an unapproved rule** — neither good nor improved ones; a rule
+changes Claude's behavior on every edit to its paths.
 
-Write approved conventions to `.opencode/conventions/project.md` — opencode
+Write each approved rule to `.opencode/conventions/project.md` — opencode
 consults files listed in `instructions` on every task, so this file becomes
 ambient guidance the agent follows automatically:
 
 ```
-# Project Conventions
+---
+paths:
+  - "<glob where the convention applies>"
+---
 
-## <convention title>
+# <convention title>
 - <the directive — actionable, imperative>
 ```
 
-Also detect the stack from step 3 (`stack` field in CONFIG) and include
-relevant **tech-stack conventions** in the same file. For common stacks:
-
-- `typescript`, `ts` → TypeScript best practices
-- `react`, `next`, `remix` → React patterns
-- `node`, `express`, `fastify` → Node.js patterns
-- `python`, `django`, `flask` → Python patterns
-- `rust`, `axum` → Rust patterns
-
-If the stack is ambiguous or unknown, skip the tech conventions — don't guess.
-
-Greenfield `sdd` repos have little code to analyze — skip the project-specific
-convention inference rather than invent. Tech-stack conventions can still be
-included if the stack is clear.
-
-Then add the conventions file to `instructions` in `${PROJECT}/opencode.json`:
-
-```json
-"instructions": [".opencode/conventions/project.md"]
-```
-
-If `instructions` already exists, append to it rather than replacing.
-
+Greenfield `sdd` repos have little code to analyze — skip rather than invent.
 This is the only artifact `wiki-bootstrap` writes outside `wiki/`.
 
 ## 6. The drift reminder (already active)
 
-The drift plugin (`${TEMPLATE_ROOT}/.opencode/plugin/wiki-drift.ts`) monitors
-sensitive paths after edits and nudges to run `wiki-ingest`. It is enabled by
-adding the plugin to `opencode.json`:
-
-```json
-"plugin": ["${TEMPLATE_ROOT}/.opencode/plugin/wiki-drift.ts"]
-```
-
-Or it will auto-load from `.opencode/plugin/`. The plugin reads globs from
-`wiki/CONFIG.md`'s `## Sensitive paths` block, so once you write CONFIG
+The PostToolUse hook that nudges `wiki-ingest` when sensitive paths change ships
+**with the plugin** (`hooks/hooks.json` → `wiki-ingest-reminder.py`) and is active
+as soon as the plugin is installed — nothing to install per repo. It reads the
+globs from `wiki/CONFIG.md`'s `## Sensitive paths` block, so once you write CONFIG
 in step 3 it targets the right paths. Tell the user: to change what triggers it,
 edit that block — no code change.
 
 ## 7. Hand off by mode
 
 First, summarize what was produced this run: the architecture topics seeded, any
-gotchas captured, and the conventions the user approved into `.opencode/conventions/project.md`.
+gotchas captured, and the rules the user approved into `.opencode/conventions/project.md`.
 
 - **`wiki-only`** → offer to seed the top 3–5 features as `draft` dossiers via
   `wiki-feature` (read code, document what exists). Don't auto-run; confirm first.
-- **`sdd`** → explain the loop: `wiki-spec` (write the spec, `status: spec`) →
-  implement with TDD → `wiki-test-plan` (tests from acceptance criteria) →
-  `wiki-verify` (promote to `stable`). Offer to write the first spec.
+- **`sdd`** → explain the loop: `wiki-spec` (write the contract in `wiki/specs/`,
+  `draft`→`ratified`) → `wiki-feature` per Story (one spec → N features, each
+  `building`, referencing the spec's AC ids) → implement with TDD →
+  `wiki-verify` (promote the **feature** to `stable`; the spec stays put). Offer
+  to write the first spec.
 
 End by listing every available skill with its trigger phrase, and remind the user
 the kb-curator keeps it honest after changes to the configured sensitive paths.

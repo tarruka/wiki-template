@@ -23,7 +23,11 @@ Fold a source into the wiki without rewriting the whole thing.
 4. **Update in place.** Integrate the new reality into existing sentences; never
    leave "UPDATE 2026-…" stubs. Fix citations to the new line ranges.
 5. Bump `last_review`. Set `status: stable` only if you verified the full page,
-   else `needs-review`. Add a one-line `## Changelog` entry.
+   else `needs-review`. **Specs are different**: a code change never moves a spec
+   (it's a contract, not a code-tracking page) — if the change actually
+   contradicts the contract, that's upstream drift: flag it for the user to amend
+   the spec deliberately, don't silently flip its status. Add a one-line
+   `## Changelog` entry.
 6. Create a new page only if a genuinely new concept emerged — then link it from
    neighbors and the index. Don't spawn a page for an incremental change to an
    existing flow.
